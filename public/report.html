@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Project report · Automata Studio</title>
+<meta name="description" content="Generate the technical report for your simulator project.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<main class="page" id="main">
+  <header class="page-head noprint"><div><h1>Project report</h1><p>Fill in your group details, check the automaton, and generate a technical report laid out for the M2 evaluation: theory, methodology, algorithms, architecture, results, tests and individual contributions. Print it to PDF.</p></div>
+    <div class="actions"><button class="btn primary" id="gen">Generate report</button><button class="btn" onclick="print()">Print / save as PDF</button></div></header>
+
+  <section class="panel noprint">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+      <label class="field">Project title<input id="title" value="Automata Studio: an interactive NFA → DFA simulator"></label>
+      <label class="field">Simulator topic<input id="topic" value="NFA → DFA conversion (subset construction)"></label>
+      <label class="field">Tutorial batch<input id="batch" placeholder="e.g. T12"></label>
+      <label class="field">Group number<input id="group" placeholder="e.g. G3"></label>
+    </div>
+    <h3>Members and contributions</h3>
+    <div class="table-wrap"><table class="data" id="members"><thead><tr><th>Name</th><th>Roll number</th><th>Contribution</th></tr></thead><tbody></tbody></table></div>
+    <h3>Example automaton used in the report</h3>
+    <textarea id="src" class="code" rows="7" spellcheck="false"></textarea>
+    <div id="srcErr" style="margin-top:6px"></div>
+  </section>
+
+  <article id="report"></article>
+</main>
+<script src="automata.js"></script>
+<script src="qgen.js"></script>
+<script src="cases.js"></script>
+<script src="assets/shell.js"></script>
+<script src="assets/graph.js"></script>
+<script src="assets/chat.js"></script>
+<script src="js/report.js"></script>
+</body>
+</html>

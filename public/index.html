@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Home · Automata Studio</title>
+<meta name="description" content="Interactive automata simulator for CSET302: NFA to DFA, string runs, DFA minimisation, timed practice and an AI tutor.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<main class="page" id="main">
+  <section class="hero">
+    <div>
+      <h1>Watch an NFA turn into a DFA, one subset at a time.</h1>
+      <p class="lede">Automata Studio is the CSET302 simulator for subset construction, string runs and DFA minimisation, with graded practice, timed exams and an AI tutor that explains every step.</p>
+      <div class="row">
+        <a class="btn primary" href="subset.html">Open the NFA → DFA simulator</a>
+        <a class="btn" href="practice.html">Practise questions</a>
+      </div>
+    </div>
+    <div>
+      <div id="demo" style="height:380px"></div>
+      <div class="caption" id="caption" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Three simulators</h2>
+    <p class="muted">Each one accepts text, a transition table or a regular expression, checks the input as you type, and plays back every step at the speed you choose.</p>
+    <div class="lanes">
+      <div class="lane"><h3>NFA → DFA</h3><p>Subset construction with ε-closures. The NFA lights up the states in each subset while the DFA grows beside it, and the working table fills in cell by cell.</p><a class="btn" href="subset.html">Open</a></div>
+      <div class="lane"><h3>String run</h3><p>An input tape, every active state at once, ε-moves in violet, and a computation tree of all paths. Test a whole list of strings in one go.</p><a class="btn" href="run.html">Open</a></div>
+      <div class="lane"><h3>DFA minimisation</h3><p>Unreachable states removed, a trap state added if needed, then the table-filling algorithm marks distinguishable pairs round by round until the classes merge.</p><a class="btn" href="minimize.html">Open</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Practice that climbs Bloom's levels</h2>
+    <p class="muted">Twelve question types cover all six levels. Answers are graded by comparing languages, so any correct automaton earns full marks, and wrong ones get a counter-example string.</p>
+    <div class="ladder" id="ladder"></div>
+    <div class="row" style="margin-top:16px"><a class="btn" href="practice.html">Start practising</a><a class="btn" href="bank.html">Write your own questions</a><a class="btn quiet" href="tutor.html">Talk to the tutor</a></div>
+  </section>
+
+  <section class="section">
+    <h2>For your project reviews</h2>
+    <p class="muted">The pages below map to the M1 design review and the M2 demonstration.</p>
+    <div class="lanes">
+      <div class="lane"><h3>Theory and design</h3><p>Formal model, pseudocode, complexity, architecture and the list of constraints and edge cases handled.</p><a class="btn" href="theory.html">Open</a></div>
+      <div class="lane"><h3>Test suite</h3><p>Normal, edge and error cases run against the engine, with expected and actual results side by side.</p><a class="btn" href="tests.html">Open</a></div>
+      <div class="lane"><h3>Project report</h3><p>Generates the technical report from your automaton: specification, construction log, diagrams, tests and results. Print it to PDF.</p><a class="btn" href="report.html">Open</a></div>
+    </div>
+  </section>
+  <p class="tiny muted" style="margin-top:36px">Keyboard in simulators: <kbd>Space</kbd> play or pause · <kbd>←</kbd> <kbd>→</kbd> step · <kbd>Ctrl</kbd>+<kbd>Enter</kbd> run the input.</p>
+</main>
+<script src="automata.js"></script>
+<script src="qgen.js"></script>
+<script src="assets/shell.js"></script>
+<script src="assets/graph.js"></script>
+<script src="assets/chat.js"></script>
+<script>
+(function () {
+  "use strict";
+  const { $, esc } = Studio, A = Automata, Q = QGen;
+  const COL = { Remember: "#5a7bd8", Understand: "#3d9ac6", Apply: "#2aa57f", Analyze: "#b9a12a", Evaluate: "#e07b2c", Create: "#d4475c" };
+  $("#ladder").innerHTML = Q.BLOOM.map((b, i) => {
+    const types = Object.values(Q.TYPES).filter(t => t.bloom === b && !t.manual).map(t => t.label);
+    return `<div class="rung" style="--b:${COL[b]};margin-top:${(5 - i) * 14}px"><b>${i + 1}. ${b}</b><span>${esc(types.join(", ") || "Written answers")}</span></div>`;
+  }).join("");
+
+  const N = A.parse("start: q0\nfinal: q2\nq0,a = q0,q1\nq0,b = q0\nq1,b = q2"), M = A.build(N);
+  const view = new GraphView($("#demo"), { title: "Strings ending in ab: the DFA being built", interactive: false });
+  view.setGraph({ nodes: M.D.map((d, i) => ({ id: "D" + i, label: "D" + i, sub: A.fmtSet(d.set), final: d.fin, start: i === 0 })), edges: M.trans.map(t => ({ from: "D" + t.f, to: "D" + t.t, sym: t.c })) });
+  const say = s => s.type === "init" ? `Start: ε-closure(q0) = ${A.fmtSet(s.closure)} becomes D0.` : `D${s.from} on “${s.c}”: move = ${A.fmtSet(s.move)}, closure = ${A.fmtSet(s.closure)} → ${s.isNew ? "new state D" + s.to : "existing D" + s.to}.`;
+  let i = 0;
+  function frame() {
+    const s = M.steps[i];
+    const visN = new Set(M.D.map((d, k) => k).filter(k => M.D[k].discovered <= i).map(k => "D" + k));
+    const visE = new Set(M.trans.filter(t => t.step <= i).map(t => `D${t.f}|D${t.t}|${t.c}`));
+    const cls = {}; if (s.type === "move") cls["D" + s.from] = "current"; cls["D" + s.to] = (cls["D" + s.to] ? cls["D" + s.to] + " " : "") + (s.isNew ? "fresh" : "");
+    view.setView({ visibleNodes: visN, visibleEdges: visE, classes: cls, hotEdges: new Set(s.type === "move" ? [`D${s.from}|D${s.to}|${s.c}`] : []), pulse: s.isNew ? "D" + s.to : null });
+    $("#caption").textContent = `Step ${i + 1} of ${M.steps.length}. ${say(s)}`;
+  }
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { i = M.steps.length - 1; frame(); }
+  else { frame(); setInterval(() => { i = (i + 1) % (M.steps.length + 2); if (i < M.steps.length) frame(); }, 1700); }
+})();
+</script>
+</body>
+</html>
