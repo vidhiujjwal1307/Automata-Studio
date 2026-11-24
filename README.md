@@ -1,189 +1,238 @@
-# ε-NFA to DFA Simulator – Automata Studio
+# NFA to DFA Simulator – Automata Studio
 
-## 1. Overview: What does the simulator do?
+## 1. Overview: What Does the Simulator Do?
 
-Automata Studio is a web-based simulator that converts an **ε-NFA (Epsilon Non-Deterministic Finite Automaton) into an equivalent DFA (Deterministic Finite Automaton)** using the Subset Construction Algorithm.
+Automata Studio is an interactive web-based application designed to convert a **Non-Deterministic Finite Automaton (NFA) into an equivalent Deterministic Finite Automaton (DFA)**.
 
-The simulator visually demonstrates each stage of the conversion process, helping users understand how finite automata work.
+The simulator implements the Subset Construction Algorithm to demonstrate how multiple possible NFA states are combined into individual DFA states.
 
-It performs the following steps:
-- Calculates the ε-closure of each state.
-- Converts the ε-NFA into an equivalent ε-free NFA.
-- Applies the Subset Construction Algorithm to generate a DFA.
-- Displays the resulting automata and transition table.
-- Provides step-by-step animation to understand the conversion process.
+It helps students understand the conversion process through visual representations, transition tables, and step-by-step execution.
+
+The main objective is to simplify the understanding of automata conversion through an interactive learning environment.
 
 ## 2. Supported Features: Implemented Operations
 
-The simulator provides the following features:
+The simulator supports the following operations:
 
-- **ε-Closure Calculation:** Finds all states reachable from a given state using zero or more ε-transitions.
-- **Move Operation:** Determines the set of states reachable from a given state or state set using a particular input symbol.
-- **ε-NFA to ε-Free NFA Conversion:** Removes epsilon transitions using epsilon closures.
-- **Subset Construction:** Converts the resulting NFA into an equivalent DFA.
-- **Transition Table:** Displays DFA states and their corresponding transitions.
-- **Automata Visualization:** Displays the NFA and DFA diagrams side by side.
-- **Step-by-Step Execution:** Animates the conversion process and highlights the currently processed state and transition.
-- **State Naming Options:** Allows different naming conventions for DFA states.
-- **Dead State Handling:** Represents the empty subset (∅) as a dead state when required.
-- **Keyboard Controls:** Supports Space for play/pause, Left and Right arrows for stepping, and Home and End for navigation.
-- **Copy Options:** Allows users to copy a shareable link and the resulting DFA as text.
+- **NFA Input:** Defines the states, input alphabet, initial state, final states, and transitions of an NFA.
+- **ε-Closure Calculation:** Finds all states reachable from a particular state using zero or more epsilon transitions.
+- **Move Operation:** Determines the set of states reachable from a given state or set of states using a particular input symbol.
+- **Subset Construction Algorithm:** Converts an NFA into an equivalent DFA by treating sets of NFA states as individual DFA states.
+- **DFA State Generation:** Automatically generates new DFA states whenever new subsets are discovered.
+- **Transition Table Generation:** Creates a table representing the transitions between the generated DFA states.
+- **Final State Identification:** Identifies DFA accepting states based on whether their corresponding subsets contain at least one accepting NFA state.
+- **Dead State Handling:** Handles empty state subsets when required during conversion.
+- **Automata Visualization:** Provides a visual representation of the conversion and resulting automata.
+- **Step-by-Step Execution:** Helps users understand the intermediate stages of the conversion algorithm.
 
 ## 3. Technology Stack and Dependencies
 
-The project is implemented as a web-based application.
+The project uses the following technologies:
 
-Technology stack:
-- **Frontend:** HTML, CSS and JavaScript (confirm against the source files).
-- **Automata Theory:** Finite Automata and Subset Construction Algorithm.
-- **Visualization:** Interactive automata diagrams and animated transitions.
+- **Frontend:** HTML5, CSS3 and JavaScript.
+- **Backend/Server:** Node.js.
+- **Core Algorithm:** Subset Construction Algorithm.
+- **Automata Concepts:** NFA, DFA, ε-closure, Move Function and Transition Functions.
 - **Deployment:** Vercel.
 
-Dependencies and versions:
-- JavaScript: Version to be confirmed.
-- HTML5 and CSS3: Browser-supported standards.
-- External libraries: To be confirmed from the project source files.
+### Dependencies
+
+Dependencies are managed through npm using `package.json`.
+
+The project includes the following npm scripts:
+
+- `npm start` – Starts the Node.js server using `server.js`.
+- `npm test` – Executes the project test file using `test.js`.
+
+Exact package versions can be found in `package.json` and `package-lock.json`.
 
 ## 4. Installation
 
-Follow these steps to run the project locally:
+Follow these steps to install and run the project locally.
 
-1. Clone the project repository:
+**Step 1: Clone the repository**
 
-   ```bash
-   git clone <repository-url>
-   ```
+```bash
+git clone https://github.com/vidhiujjwal1307/Automata-Studio.git
+```
 
-2. Navigate to the project directory:
+**Step 2: Navigate to the project directory**
 
-   ```bash
-   cd <project-folder>
-   ```
+```bash
+cd Automata-Studio
+```
 
-3. Install dependencies if a package.json file is present:
+**Step 3: Install dependencies**
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-4. Start the development server using the project's configured command:
+**Step 4: Start the application**
 
-   ```bash
-   npm run dev
-   ```
+```bash
+npm start
+```
 
-5. Open the local URL displayed in the terminal.
+**Step 5: Open the application**
 
-**Note:** If the project is implemented as a static HTML/CSS/JavaScript application without a build system, open its HTML entry file directly in a browser instead. The exact setup depends on the repository structure.
+Open the local URL displayed in the terminal in your web browser.
 
 ## 5. How to Run
 
-The deployed application can be accessed here:
+The deployed simulator can be accessed at:
 
 https://automata-simulator-ashen.vercel.app/subset.html
 
-Steps to use the simulator:
+### Steps to Use the Simulator
 
-1. Open the application in a web browser.
-2. Enter or configure the ε-NFA.
-3. Select the required visualization mode: NFA and DFA, NFA only, or DFA only.
-4. Choose the desired DFA state-naming convention.
-5. Click the Convert button to begin the conversion.
-6. Observe the ε-closure calculations and the equivalent ε-free NFA.
-7. Follow the subset construction process as DFA states are discovered.
-8. View the final DFA diagram and transition table.
-9. Use the playback controls to move through individual conversion steps.
+1. Open the NFA to DFA simulator.
+2. Provide the NFA definition, including states, alphabet, initial state, final states, and transitions.
+3. Specify epsilon transitions wherever required.
+4. Start the conversion process.
+5. Calculate the epsilon closure of the initial state.
+6. Apply the Move operation for each input symbol.
+7. Calculate epsilon closures of the resulting state sets.
+8. Generate new DFA states using the Subset Construction Algorithm.
+9. Continue until all reachable subsets have been processed.
+10. View the resulting DFA and its transition table.
 
 ## 6. Example: Sample Automaton Definition, Input and Output
 
-**Input:**
+### Example NFA
 
-An example ε-NFA consists of:
-- A finite set of states (Q).
-- An input alphabet (Σ).
-- A transition function (δ).
-- An initial state (q0).
-- A set of final states (F).
-- Optional ε-transitions.
+Consider an NFA with the following components:
 
-The user enters or configures the automaton in the simulator.
+- States: Q = {q0, q1}
+- Alphabet: Σ = {a, b}
+- Initial State: q0
+- Final State: F = {q1}
 
-**Processing:**
+Transitions:
 
-The simulator:
-1. Calculates the ε-closure of the initial state.
-2. Applies the move operation for each input symbol.
-3. Calculates the ε-closure of the resulting states.
-4. Creates new DFA states from the discovered subsets.
-5. Repeats the process until no new subsets are generated.
+| Current State | Input | Next State |
+|---|---|---|
+| q0 | a | q0, q1 |
+| q0 | b | q0 |
+| q1 | a | ∅ |
+| q1 | b | q1 |
 
-**Output:**
+### Conversion Process
 
-- Equivalent ε-free NFA.
-- DFA state transition table.
-- Final DFA diagram.
-- Accepting states and dead state, if applicable.
+**Step 1: Initial DFA State**
 
-The resulting DFA recognizes the same language as the original ε-NFA.
+The initial DFA state is the set containing the initial NFA state.
+
+A = {q0}
+
+**Step 2: Apply Move Operation**
+
+For input symbol `a`:
+
+Move({q0}, a) = {q0, q1}
+
+Therefore, a new DFA state is generated:
+
+B = {q0, q1}
+
+For input symbol `b`:
+
+Move({q0}, b) = {q0}
+
+Therefore, the resulting DFA state is A.
+
+**Step 3: Generate Remaining Transitions**
+
+For state B = {q0, q1}:
+
+- On input `a`, the resulting set is {q0, q1}.
+- On input `b`, the resulting set is {q0, q1}.
+
+### Final DFA Transition Table
+
+| DFA State | a | b |
+|---|---|---|
+| A = {q0} | B | A |
+| B = {q0, q1} | B | B |
+
+### Final States
+
+Since B contains the NFA final state q1, B is an accepting DFA state.
+
+The generated DFA is equivalent to the original NFA.
+
+*Note: This is an illustrative example without epsilon transitions. The simulator's ε-closure operation is used when epsilon transitions are present.*
 
 ## 7. Project Structure: Modules and Responsibilities
 
-The project is organized around the following functional responsibilities. Exact filenames should be updated according to the source repository.
+The project is organized into different modules responsible for handling the automata conversion process.
 
 | Module | Responsibility |
 |---|---|
-| Input Module | Accepts and manages the automaton definition. |
-| ε-Closure Module | Calculates states reachable through epsilon transitions. |
-| Move Function | Finds reachable states for a given input symbol. |
-| NFA Conversion Module | Generates the equivalent epsilon-free NFA. |
-| Subset Construction Module | Generates DFA states and transitions. |
+| `server.js` | Starts the Node.js server and serves the application. |
+| `subset.html` | Provides the NFA-to-DFA simulator interface. |
+| NFA Input Module | Handles the NFA states, alphabet and transitions. |
+| `move()` Function | Calculates reachable states for a given input symbol. |
+| ε-Closure Function | Finds all states reachable through epsilon transitions. |
+| Subset Construction Module | Generates DFA states and their transitions. |
 | Transition Table Module | Displays the generated DFA transition table. |
-| Visualization Module | Draws the NFA and DFA diagrams. |
-| Animation Module | Demonstrates the conversion step by step. |
-| Result Module | Displays the final DFA and provides copy functionality. |
+| Visualization Module | Displays the automata and conversion results. |
+| `test.js` | Runs the project's automated test cases. |
 
 ## 8. Testing
 
-The simulator can be tested using different automata configurations.
+Testing is performed to verify the correctness of the NFA-to-DFA conversion process.
 
-**Test cases:**
+The project includes a test script that can be executed using:
 
-1. **NFA without epsilon transitions:** Verify that the simulator handles a normal NFA correctly.
-2. **ε-NFA with multiple epsilon transitions:** Verify correct ε-closure calculation.
-3. **Multiple reachable states:** Check whether the move operation returns all reachable states.
-4. **Multiple accepting states:** Verify that DFA subsets containing at least one accepting NFA state are marked accepting.
-5. **Dead state:** Verify correct handling of the empty subset (∅).
-6. **Subset generation:** Ensure that new DFA states are generated until all reachable subsets have been processed.
-7. **Transition table:** Verify that the displayed transitions match the generated DFA.
-8. **Animation controls:** Check play, pause, next-step, previous-step, Home and End controls.
+```bash
+npm test
+```
 
-**Expected Behavior:**
+### Important Test Cases
 
-The generated DFA should be equivalent to the original ε-NFA in terms of accepted language. Every reachable DFA subset should have the correct transitions, and accepting states should be identified correctly.
+1. **NFA without epsilon transitions:** Verify the conversion of a basic NFA.
+2. **NFA with epsilon transitions:** Verify the correct calculation of epsilon closures.
+3. **Multiple transitions:** Check whether the Move operation identifies all reachable states.
+4. **Multiple final states:** Verify the identification of accepting DFA states.
+5. **New subset generation:** Check whether new DFA states are generated correctly.
+6. **Repeated subsets:** Ensure previously generated subsets are not duplicated.
+7. **Dead state:** Verify the handling of empty subsets.
+8. **Transition table:** Ensure that all generated transitions are represented correctly.
+
+### Expected Results
+
+- The generated DFA should recognize the same language as the original NFA.
+- Every reachable subset should be processed.
+- DFA accepting states should be identified correctly.
+- The transition table should represent the generated DFA accurately.
 
 ## 9. Known Limitations and Troubleshooting
 
-- Incorrect automaton input may result in unexpected conversion output.
-- Large automata can generate many DFA states because subset construction may produce up to 2ⁿ subsets for n NFA states.
-- Complex automata may require additional time for visualization and animation.
-- The simulator requires a modern web browser with JavaScript enabled.
-- If the conversion does not start, check the automaton input and ensure that the Convert action is triggered.
-- If the visualization is not displayed correctly, refresh the page or try another supported browser.
+- The number of DFA states can increase significantly as the number of NFA states increases.
+- Incorrect or incomplete NFA input can affect the conversion results.
+- Complex automata may require additional processing time.
+- The application requires JavaScript-enabled browser support.
+- If the server fails to start, verify that Node.js and npm are installed correctly.
+- If dependencies are missing, execute `npm install`.
+- If `npm run dev` does not work, use `npm start`, as configured in the project's package.json.
 
 ## 10. Team Contributions and Acknowledgements
 
 The project was developed collaboratively as part of the Automata Theory coursework.
 
-**Team Contributions:**
-- Implementation of automata conversion operations.
-- Development of ε-closure and move functionality.
-- Implementation of the Subset Construction Algorithm.
-- Development of interactive visualizations and transition tables.
-- Testing and verification of the generated DFA.
-- Documentation and project integration.
+### Team Contributions
 
-**Acknowledgements:**
+- Designing and developing the NFA-to-DFA simulator.
+- Implementing the Move and ε-Closure operations.
+- Implementing the Subset Construction Algorithm.
+- Generating DFA states and transition tables.
+- Developing the visual interface for automata conversion.
+- Testing the conversion process with different NFA configurations.
+- Preparing project documentation.
 
-We would like to thank our faculty and mentors for their guidance and support throughout the development of this project.
+### Acknowledgements
 
-The project helped us understand the practical implementation of finite automata, epsilon transitions, and the conversion of nondeterministic finite automata into deterministic finite automata.
+We would like to express our gratitude to our faculty members for their guidance and support throughout the development of this project.
+
+This project provided practical experience in implementing automata theory concepts and understanding the mathematical relationship between Non-Deterministic and Deterministic Finite Automata.
