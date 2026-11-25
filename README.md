@@ -33,7 +33,7 @@ The project uses the following technologies:
 - **Backend/Server:** Node.js.
 - **Core Algorithm:** Subset Construction Algorithm.
 - **Automata Concepts:** NFA, DFA, ε-closure, Move Function and Transition Functions.
-- **Deployment:** Vercel.
+
 
 ### Dependencies
 
